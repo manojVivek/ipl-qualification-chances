@@ -7,7 +7,7 @@ let pointsTable: Points[] = [];
 let CACHE: Record<string, TeamResult> = {};
 
 export const computeChance = (teamID: string) => {
-  if (CACHE[teamID]) {
+  if (false && CACHE[teamID]) {
     return CACHE[teamID];
   }
 
@@ -17,6 +17,7 @@ export const computeChance = (teamID: string) => {
 };
 
 const _computeChance = async () => {
+  await refreshSchedule();
   CACHE = await computeCombinations(pointsTable, upcomingSchedule);
 };
 
