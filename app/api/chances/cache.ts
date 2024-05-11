@@ -107,6 +107,9 @@ const refreshSchedule = async () => {
     }
   } catch (e) {
     console.error("Error refreshing schedule", e);
+    fetch("https://www.google.com")
+      .then((res) => res.text())
+      .then(console.log);
     throw e;
   }
 };
