@@ -29,6 +29,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.35.1
     version: 5.35.1(react@18.3.1)
+  '@tanstack/react-virtual':
+    specifier: ^3.5.0
+    version: 3.5.0(react-dom@18.3.1)(react@18.3.1)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0

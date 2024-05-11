@@ -27,16 +27,28 @@ To read more about using these font, please visit the Next.js documentation:
 import Image from "next/image";
 import { TEAMS, Team } from "@/lib/constants";
 import TeamSelector from "./TeamSelector";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useChances } from "@/hooks/useChances";
 import { Icon } from "@iconify/react";
 import { MatchCard } from "./MatchCard";
 import { PointsTable } from "./PointsTable";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 export function IPL() {
   const [selectedTeam, setSelectedTeam] = useState<Team | undefined>(undefined);
 
   const { isLoading, data } = useChances(selectedTeam);
+
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const columnVirtualizer = useVirtualizer({
+    horizontal: true,
+    count: data?.posibilities?.length ?? 0,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 352,
+    overscan: 5,
+    gap: 16,
+  });
 
   return (
     <>
@@ -80,23 +92,44 @@ export function IPL() {
             {data?.posibilities?.length} Possible Scenarios
           </h2>
           <div className="flex justify-center flex-col">
-            <div className="flex gap-4 flex-nowrap overflow-auto w-[96vw]">
-              {data?.posibilities.map((possibility, index) => (
+            <div
+              className="flex gap-4 flex-nowrap overflow-auto w-[96vw] relative min-h-[1000px]"
+              ref={parentRef}
+            >
+              {columnVirtualizer.getVirtualItems().map((virtualColumn) => (
                 <div
-                  key={index}
-                  className="bg-white p-4 rounded-lg shadow-md flex gap-4 flex-col"
+                  key={virtualColumn.index}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    height: "100%",
+                    width: `${virtualColumn.size}px`,
+                    transform: `translateX(${virtualColumn.start}px)`,
+                  }}
                 >
-                  <div>
-                    <h3 className="text-lg font-medium">
-                      Scenario {index + 1}
-                    </h3>
+                  <div
+                    key={virtualColumn.index}
+                    className="bg-white p-4 rounded-lg shadow-md flex gap-4 flex-col"
+                  >
+                    <div>
+                      <h3 className="text-lg font-medium">
+                        Scenario {virtualColumn.index + 1}
+                      </h3>
+                    </div>
+                    <div className="flex items-center flex-col gap-2">
+                      {data?.posibilities[virtualColumn.index].outcome.map(
+                        (outcome) => {
+                          return (
+                            <MatchCard key={outcome.RowNo} match={outcome} />
+                          );
+                        }
+                      )}
+                    </div>
+                    <PointsTable
+                      points={data.posibilities[virtualColumn.index].points}
+                    />
                   </div>
-                  <div className="flex items-center flex-col gap-2">
-                    {possibility.outcome.map((outcome) => {
-                      return <MatchCard key={outcome.RowNo} match={outcome} />;
-                    })}
-                  </div>
-                  <PointsTable points={possibility.points} />
                 </div>
               ))}
             </div>
