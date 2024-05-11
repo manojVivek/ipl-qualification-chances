@@ -7,7 +7,7 @@ let pointsTable: Points[] = [];
 let CACHE: Record<string, TeamResult> = {};
 
 export const computeChance = (teamID: string) => {
-  if (false && CACHE[teamID]) {
+  if (CACHE[teamID]) {
     return CACHE[teamID];
   }
 
@@ -17,7 +17,6 @@ export const computeChance = (teamID: string) => {
 };
 
 const _computeChance = async () => {
-  await refreshSchedule();
   CACHE = await computeCombinations(pointsTable, upcomingSchedule);
 };
 
@@ -108,9 +107,6 @@ const refreshSchedule = async () => {
     }
   } catch (e) {
     console.error("Error refreshing schedule", e);
-    fetch("https://www.google.com")
-      .then((res) => res.text())
-      .then(console.log);
     throw e;
   }
 };
