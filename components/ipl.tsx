@@ -87,7 +87,7 @@ export function IPL() {
         </div>
       </div>
       {data?.percentage != null ? (
-        <div className="px-4 md:px-6 py-12  mx-auto flex flex-col items-center">
+        <div className="px-4 md:px-6 py-12  mx-auto flex flex-col items-center text-black">
           <h2 className="text-2xl font-medium mb-6">
             {data?.posibilities?.length} Possible Scenarios
           </h2>
