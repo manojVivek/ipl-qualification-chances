@@ -165,13 +165,10 @@ async function combinations(
   indexes: number[] = []
 ) {
   if (n === list.length) {
-    //console.log("Done processing for", indexes.join(", "));
     result.push(current);
   } else {
     for (let i = 0; i < list[n].length; i++) {
       const item = list[n][i];
-      //console.log("n", "i", n, i);
-      //await new Promise((resolve) => setTimeout(resolve, 1000));
       combinations(list, n + 1, result, [...current, item], [...indexes, i]);
     }
   }
