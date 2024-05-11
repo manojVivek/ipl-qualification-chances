@@ -114,5 +114,5 @@ const refreshSchedule = async () => {
   }
 };
 
-setInterval(refreshSchedule, 1000 * 60 * 5);
+setInterval(refreshSchedule, 1000 * 60 * 1);
 refreshSchedule();
