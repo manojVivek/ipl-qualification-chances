@@ -77,7 +77,9 @@ const refreshSchedule = async () => {
 
     const upcomingScheduleNew = schedule
       .filter(
-        (match: any) => match.MatchStatus === "UpComing" && match.KO === ""
+        (match: any) =>
+          (match.MatchStatus === "UpComing" || match.MatchStatus === "Live") &&
+          match.KO === ""
       )
       .sort(
         (a: any, b: any) =>
