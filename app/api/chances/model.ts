@@ -131,7 +131,7 @@ function qualifyingTeamsInPointsTable(points: Points[]): string[] {
       qualifyingTeams.push(points[i].TeamCode);
     }
     if (i > 3 && points[i].Points === points[3].Points) {
-      //qualifyingTeams.push(points[i].TeamCode);
+      qualifyingTeams.push(points[i].TeamCode);
     }
   }
   return qualifyingTeams;
