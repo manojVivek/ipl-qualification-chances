@@ -130,7 +130,11 @@ function qualifyingTeamsInPointsTable(points: Points[]): string[] {
     if (i < 4) {
       qualifyingTeams.push(points[i].TeamCode);
     }
-    if (i > 3 && points[i].Points === points[3].Points) {
+    if (
+      i > 3 &&
+      points[i].Points === points[3].Points &&
+      Math.abs(points[i].NetRunRate - points[3].NetRunRate) < 0.25
+    ) {
       qualifyingTeams.push(points[i].TeamCode);
     }
   }
