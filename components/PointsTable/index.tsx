@@ -10,11 +10,13 @@ export const PointsTable = ({ points }: Props) => {
       <div className="flex justify-between">
         <span>Team</span>
         <span>Points</span>
+        <span>NRR</span>
       </div>
       {points.map((point) => (
         <div key={point.TeamCode} className="flex justify-between">
           <span>{point.TeamCode}</span>
           <span>{point.Points}</span>
+          <span>{point.NetRunRate}</span>
         </div>
       ))}
     </div>
