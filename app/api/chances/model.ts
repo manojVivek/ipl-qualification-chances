@@ -21,7 +21,10 @@ export interface Match {
 
 export type MatchOutcome = Match & {
   winner: string;
+  loser: string;
   result: "WINNER" | "DRAW";
+  WinnerNRRChange: number;
+  LoserNRRChange: number;
 };
 
 export interface TeamResult {
@@ -66,10 +69,18 @@ export const computeCombinations = async (
         ).Points += 1;
       }
       if (match.result === "WINNER") {
-        // @ts-expect-error
-        currentPoints.find(
+        const winner = currentPoints.find(
           (point) => point.TeamCode === match.winner
-        ).Points += 2;
+        ) as Points;
+
+        winner.Points += 2;
+        winner.NetRunRate += match.WinnerNRRChange;
+
+        const loser = currentPoints.find(
+          (point) => point.TeamCode === match.loser
+        ) as Points;
+
+        loser.NetRunRate += match.LoserNRRChange;
       }
     }
 
@@ -100,6 +111,12 @@ export const computeCombinations = async (
 
   for (const team of Object.keys(output)) {
     output[team].percentage = (output[team].count / totalCombos) * 100;
+    output[team].posibilities = output[team].posibilities.sort((a, b) => {
+      return (
+        a.points.findIndex((points) => points.TeamCode === team) -
+        b.points.findIndex((points) => points.TeamCode === team)
+      );
+    });
   }
 
   console.log("Possible different outcomes", totalCombos);
@@ -146,18 +163,40 @@ const getPossibleOutcomes = (match: Match): MatchOutcome[] => {
     {
       ...match,
       winner: match.FirstBattingTeamCode,
+      loser: match.SecondBattingTeamCode,
       result: "WINNER",
+      WinnerNRRChange: 0.05,
+      LoserNRRChange: -0.05,
     },
     {
       ...match,
       winner: match.SecondBattingTeamCode,
+      loser: match.FirstBattingTeamCode,
       result: "WINNER",
+      WinnerNRRChange: 0.05,
+      LoserNRRChange: -0.05,
     },
     // {
     //   ...match,
     //   winner: "",
     //   result: "DRAW",
     // },
+    {
+      ...match,
+      winner: match.FirstBattingTeamCode,
+      loser: match.SecondBattingTeamCode,
+      result: "WINNER",
+      WinnerNRRChange: 0.25,
+      LoserNRRChange: -0.25,
+    },
+    {
+      ...match,
+      winner: match.SecondBattingTeamCode,
+      loser: match.FirstBattingTeamCode,
+      result: "WINNER",
+      WinnerNRRChange: 0.25,
+      LoserNRRChange: -0.25,
+    },
   ];
 };
 

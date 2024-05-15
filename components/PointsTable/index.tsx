@@ -16,7 +16,7 @@ export const PointsTable = ({ points }: Props) => {
         <div key={point.TeamCode} className="flex justify-between">
           <span>{point.TeamCode}</span>
           <span>{point.Points}</span>
-          <span>{point.NetRunRate}</span>
+          <span>{point.NetRunRate.toPrecision(3)}</span>
         </div>
       ))}
     </div>

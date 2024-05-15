@@ -18,7 +18,12 @@ export const MatchCard = ({ match }: Props) => {
         <span>vs</span>
         <TeamAvatarMini team={TEAMS_MAP[match.SecondBattingTeamCode]} />
       </div>
-      <div className="flex justify-center">{match.winner} wins</div>
+      <div className="flex justify-center items-center gap-2">
+        {match.winner} wins
+        {match.WinnerNRRChange > 0.075 ? (
+          <span className="text-xs">(with +{match.WinnerNRRChange})NRR)</span>
+        ) : null}
+      </div>
     </div>
   );
 };
