@@ -1,6 +1,6 @@
 import { Match, Points, TeamResult, computeCombinations } from "./model";
 
-let competitionID: number | undefined = 148;
+let competitionID: number | undefined = 203;
 let upcomingSchedule: Match[] = [];
 let pointsTable: Points[] = [];
 
